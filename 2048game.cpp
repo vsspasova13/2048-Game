@@ -13,19 +13,20 @@ using namespace std;
 * @9MI0600353
 * @GCC
 *
-*
 */
 
 unsigned const int MAX_NICKNAME_SIZE = 100;
 unsigned const int MAX_MATRIX_SIZE = 10;
 unsigned const int SIZE_OF_LEADERBOARD = 5;
 unsigned const int SPACE_BETWEEN_NUMBERS = 5;
+unsigned const int MIN_SIZE_BOARD = 4;
+unsigned const int MAX_SIZE_BOARD = 10;
 
 bool difference = false;
 
 bool isValidSize(const int size)
 {
-	return (size >= 4 && size <= 10);
+	return (size >= MIN_SIZE_BOARD && size <= MAX_SIZE_BOARD);
 }
 
 bool isValidDirection(const char dir)
@@ -351,10 +352,10 @@ void logic(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& resul
 		randomNumber(matrix, size, randX, randY);
 		flag = false;
 	}
-	
-		randomNumber(matrix, size, randX, randY);
-		calculateResult(matrix, size, result);
-		print(matrix, size, result);
+
+	randomNumber(matrix, size, randX, randY);
+	calculateResult(matrix, size, result);
+	print(matrix, size, result);
 
 }
 
@@ -620,7 +621,7 @@ void game()
 	fillWithValue(arr, matrixSize, false);
 
 	while (true)
-	{	
+	{
 		logic(matrix, matrixSize, result, nickname, isFirstMove);
 		char dir = ' ';
 		//if (!logic(matrix, matrixSize, result, nickname, isFirstMove)) break;
@@ -683,7 +684,7 @@ int main()
 			printLeaderboard();
 		}
 		if (option == '3') return 0;
-		
+
 		printMenu();
 		option = chooseOption();
 
