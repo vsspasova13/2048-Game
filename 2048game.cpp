@@ -16,7 +16,6 @@ using namespace std;
 *
 */
 
-
 unsigned const int MAX_NICKNAME_SIZE = 100;
 unsigned const int MAX_MATRIX_SIZE = 10;
 unsigned const int SIZE_OF_LEADERBOARD = 5;
@@ -278,7 +277,7 @@ void swapStr(char* str1, char* str2)
 	myStrcpy(copy, str2);
 }
 
-void changeLeadboard(int result, char* nickname, size_t size)
+void changeLeaderboard(int result, char* nickname, size_t size)
 {
 	int points[SIZE_OF_LEADERBOARD+1];
 	char nicknames[SIZE_OF_LEADERBOARD+1][MAX_NICKNAME_SIZE];
@@ -310,7 +309,7 @@ void changeLeadboard(int result, char* nickname, size_t size)
 
 }
 
-void printLeadboard()
+void printLeaderboard()
 {
 	cout << "Choose size: ";
 	int leadboardSize;
@@ -361,7 +360,7 @@ bool logic(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& resul
 	}
 	else if (isGameOver(matrix, size))
 	{
-		changeLeadboard(result, nickname, size);
+		changeLeaderboard(result, nickname, size);
 		return false;
 	}
 	return true;
@@ -627,9 +626,10 @@ void game()
 
 	bool arr[MAX_MATRIX_SIZE][MAX_MATRIX_SIZE];
 	fillWithValue(arr, matrixSize, false);
-	do
+	while (logic(matrix, matrixSize, result, nickname, isFirstMove))
 	{
-		char dir;
+		char dir=' ';
+		//if (!logic(matrix, matrixSize, result, nickname, isFirstMove)) break;
 		do
 		{
 			cout << "Enter direction: ";
@@ -638,10 +638,10 @@ void game()
 
 		} while (!isValidDirection(dir));
 
-		if (!logic(matrix, matrixSize, result, nickname, isFirstMove))break;
+		
 		moves(matrix, matrixSize, dir, arr);
 
-	} while (logic(matrix, matrixSize, result, nickname, isFirstMove));
+	} 
 
 	cout << "Game over" << endl;
 
@@ -649,7 +649,7 @@ void game()
 
 void printMenu()
 {
-	cout << "1. Start game" << endl << "2. Leadboard" << endl << "3. Quit" << endl;
+	cout << "1. Start game" << endl << "2. Leaderboard" << endl << "3. Quit" << endl;
 }
 
 int chooseOption()
@@ -670,6 +670,7 @@ int chooseOption()
 int main()
 {
 	srand(time(0));
+
 	printMenu();
 
 	unsigned int option = chooseOption();
@@ -682,7 +683,7 @@ int main()
 		}
 		if (option == 2)
 		{
-			printLeadboard();
+			printLeaderboard();
 		}
 		if (option == 3) return 0;
 		printMenu();
