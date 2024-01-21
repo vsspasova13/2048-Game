@@ -24,22 +24,22 @@ unsigned const int SPACE_BETWEEN_NUMBERS = 5;
 
 bool difference = false;
 
-bool isValidSize(int size)
+bool isValidSize(const int size)
 {
 	return (size >= 4 && size <= 10);
 }
 
-bool isValidDirection(char dir)
+bool isValidDirection(const char dir)
 {
 	return (dir == 'w' || dir == 'a' || dir == 's' || dir == 'd');
 }
 
-bool isValidOption(int option)
+bool isValidOption(const int option)
 {
 	return (option == 1 || option == 2 || option == 3);
 }
 
-void myStrcpy(char* source, char* dest)
+void myStrcpy(const char* source, char* dest)
 {
 	if (!source || !dest)
 		return;
@@ -82,7 +82,7 @@ void swap(int& a, int& b)
 	a = b; b = temp;
 }
 
-bool isMatrixFull(int matrix[][MAX_MATRIX_SIZE], unsigned int size)
+bool isMatrixFull(const int matrix[][MAX_MATRIX_SIZE], unsigned int size)
 {
 	for (int i = 0; i < size; i++)
 	{
@@ -120,7 +120,7 @@ int lengthOfNumber(int n)
 	return length;
 }
 
-void printMatrix(int matrix[][MAX_MATRIX_SIZE], unsigned int size)
+void printMatrix(const int matrix[][MAX_MATRIX_SIZE], unsigned int size)
 {
 	for (int i = 0; i < size; i++)
 	{
@@ -140,14 +140,14 @@ void printMatrix(int matrix[][MAX_MATRIX_SIZE], unsigned int size)
 	}
 }
 
-void print(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int result)
+void print(const int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int result)
 {
 	system("CLS");
 	printMatrix(matrix, size);
 	cout << "Result: " << result << endl;
 }
 
-unsigned int calculateResult(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& result)
+unsigned int calculateResult(const int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& result)
 {
 	result = 0;
 	for (int i = 0; i < size; i++)
@@ -160,7 +160,7 @@ unsigned int calculateResult(int matrix[][MAX_MATRIX_SIZE], unsigned int size, u
 	return result;
 }
 
-void generateRandomIndex(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& randX, unsigned int& randY)
+void generateRandomIndex(const int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& randX, unsigned int& randY)
 {
 	randX = (rand() % size);
 	randY = (rand() % size);
@@ -192,7 +192,7 @@ void randomNumber(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int
 	}
 }
 
-bool isGameOver(int matrix[][MAX_MATRIX_SIZE], unsigned int size)
+bool isGameOver(const int matrix[][MAX_MATRIX_SIZE], unsigned int size)
 {
 	for (int i = 0; i < size; i++)
 	{
@@ -226,7 +226,7 @@ bool isGameOver(int matrix[][MAX_MATRIX_SIZE], unsigned int size)
 	return true;
 }
 
-void readingFromFile(int points[6], char nicknames[6][MAX_NICKNAME_SIZE], size_t size)
+void readingFromFile(int points[SIZE_OF_LEADERBOARD+1], char nicknames[SIZE_OF_LEADERBOARD+1][MAX_NICKNAME_SIZE], size_t size)
 {
 	int rank;
 	char fileName[10][13] = { "../4x4.txt", "../5x5.txt", "../6x6.txt", "../7x7.txt",
@@ -611,9 +611,10 @@ void game()
 
 	unsigned int matrixSize;
 	do
-	{
+	{   
 		cout << "Enter size: ";
 		cin >> matrixSize;
+		if (!isValidSize(matrixSize))cout << "Enter a size between 4 and 10." << endl;
 
 	} while (!isValidSize(matrixSize));
 
@@ -633,6 +634,7 @@ void game()
 		{
 			cout << "Enter direction: ";
 			cin >> dir;
+			if (!isValidDirection(dir))cout << "Enter valid direction(w, a, s, d)." << endl;
 
 		} while (!isValidDirection(dir));
 
@@ -658,6 +660,8 @@ int chooseOption()
 		cout << "Option: ";
 		cin >> option;
 		cin.ignore();
+		if (!isValidOption(option))cout << "Enter a valid option." <<endl;
+
 	} while (!isValidOption(option));
 
 	return option;
@@ -665,7 +669,6 @@ int chooseOption()
 
 int main()
 {
-
 	srand(time(0));
 	printMenu();
 
@@ -688,3 +691,5 @@ int main()
 	}
 
 }
+
+
