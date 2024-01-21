@@ -9,9 +9,9 @@ using namespace std;
 * Faculty of Mathematics and Informatics of Sofia University
 * Winter semester 2023/2024
 *
-* @Velislava Spasova 
-* @9MI0600353 
-* @GCC 
+* @Velislava Spasova
+* @9MI0600353
+* @GCC
 *
 *
 */
@@ -35,7 +35,7 @@ bool isValidDirection(const char dir)
 
 bool isValidOption(const int option)
 {
-	return (option == 1 || option == 2 || option == 3);
+	return (option == '1' || option == '2' || option == '3');
 }
 
 void myStrcpy(const char* source, char* dest)
@@ -81,7 +81,7 @@ void swap(int& a, int& b)
 	a = b; b = temp;
 }
 
-bool isMatrixFull(const int matrix[][MAX_MATRIX_SIZE], unsigned int size)
+bool isMatrixNotFull(const int matrix[][MAX_MATRIX_SIZE], unsigned int size)
 {
 	for (int i = 0; i < size; i++)
 	{
@@ -180,7 +180,7 @@ void putRandomNumber(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned 
 
 void randomNumber(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& x, unsigned int& y)
 {
-	if (isMatrixFull(matrix, size) || difference == 0)
+	if (isMatrixNotFull(matrix, size) || difference == 0)
 	{
 		return;
 	}
@@ -225,7 +225,7 @@ bool isGameOver(const int matrix[][MAX_MATRIX_SIZE], unsigned int size)
 	return true;
 }
 
-void readingFromFile(int points[SIZE_OF_LEADERBOARD+1], char nicknames[SIZE_OF_LEADERBOARD+1][MAX_NICKNAME_SIZE], size_t size)
+void readingFromFile(int points[SIZE_OF_LEADERBOARD + 1], char nicknames[SIZE_OF_LEADERBOARD + 1][MAX_NICKNAME_SIZE], size_t size)
 {
 	int rank;
 	char fileName[10][13] = { "../4x4.txt", "../5x5.txt", "../6x6.txt", "../7x7.txt",
@@ -279,19 +279,19 @@ void swapStr(char* str1, char* str2)
 
 void changeLeaderboard(int result, char* nickname, size_t size)
 {
-	int points[SIZE_OF_LEADERBOARD+1];
-	char nicknames[SIZE_OF_LEADERBOARD+1][MAX_NICKNAME_SIZE];
+	int points[SIZE_OF_LEADERBOARD + 1];
+	char nicknames[SIZE_OF_LEADERBOARD + 1][MAX_NICKNAME_SIZE];
 
 	readingFromFile(points, nicknames, size);
 
-	if (points[SIZE_OF_LEADERBOARD-1] >= result)
+	if (points[SIZE_OF_LEADERBOARD - 1] >= result)
 	{
 		return;
 	}
 	points[SIZE_OF_LEADERBOARD] = result;
 	myStrcpy(nickname, nicknames[SIZE_OF_LEADERBOARD]);
 
-	for (int i = 0; i < SIZE_OF_LEADERBOARD+1; i++)
+	for (int i = 0; i < SIZE_OF_LEADERBOARD + 1; i++)
 	{
 
 		for (int j = 0; j < SIZE_OF_LEADERBOARD - i; j++)
@@ -342,7 +342,7 @@ void printLeaderboard()
 	file.close();
 }
 
-bool logic(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& result, char* nickname, bool& flag)
+void logic(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& result, char* nickname, bool& flag)
 {
 	unsigned int randX, randY;
 	if (flag)
@@ -351,19 +351,11 @@ bool logic(int matrix[][MAX_MATRIX_SIZE], unsigned int size, unsigned int& resul
 		randomNumber(matrix, size, randX, randY);
 		flag = false;
 	}
-	if (!isMatrixFull(matrix, size))
-	{
-
+	
 		randomNumber(matrix, size, randX, randY);
 		calculateResult(matrix, size, result);
 		print(matrix, size, result);
-	}
-	else if (isGameOver(matrix, size))
-	{
-		changeLeaderboard(result, nickname, size);
-		return false;
-	}
-	return true;
+
 }
 
 void fillWithValue(bool arr[][MAX_MATRIX_SIZE], unsigned int size, bool value)
@@ -610,7 +602,7 @@ void game()
 
 	unsigned int matrixSize;
 	do
-	{   
+	{
 		cout << "Enter size: ";
 		cin >> matrixSize;
 		if (!isValidSize(matrixSize))cout << "Enter a size between 4 and 10." << endl;
@@ -626,9 +618,11 @@ void game()
 
 	bool arr[MAX_MATRIX_SIZE][MAX_MATRIX_SIZE];
 	fillWithValue(arr, matrixSize, false);
-	while (logic(matrix, matrixSize, result, nickname, isFirstMove))
-	{
-		char dir=' ';
+
+	while (true)
+	{	
+		logic(matrix, matrixSize, result, nickname, isFirstMove);
+		char dir = ' ';
 		//if (!logic(matrix, matrixSize, result, nickname, isFirstMove)) break;
 		do
 		{
@@ -638,12 +632,15 @@ void game()
 
 		} while (!isValidDirection(dir));
 
-		
-		moves(matrix, matrixSize, dir, arr);
 
-	} 
+		moves(matrix, matrixSize, dir, arr);
+		if (isMatrixNotFull(matrix, matrixSize) && isGameOver(matrix, matrixSize))break;
+
+	}
 
 	cout << "Game over" << endl;
+
+	changeLeaderboard(result, nickname, matrixSize);
 
 }
 
@@ -654,13 +651,13 @@ void printMenu()
 
 int chooseOption()
 {
-	unsigned int option;
+	char option;
 	do
 	{
 		cout << "Option: ";
 		cin >> option;
 		cin.ignore();
-		if (!isValidOption(option))cout << "Enter a valid option." <<endl;
+		if (!isValidOption(option))cout << "Enter a valid option." << endl;
 
 	} while (!isValidOption(option));
 
@@ -677,20 +674,18 @@ int main()
 
 	while (true)
 	{
-		if (option == 1)
+		if (option == '1')
 		{
 			game();
 		}
-		if (option == 2)
+		if (option == '2')
 		{
 			printLeaderboard();
 		}
-		if (option == 3) return 0;
+		if (option == '3') return 0;
+		
 		printMenu();
 		option = chooseOption();
 
 	}
-
 }
-
-
