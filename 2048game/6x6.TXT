@@ -1,5 +1,0 @@
-1 Marti 65000
-2 Georgi 54004
-3 Alexx 28900
-4 _Wlad_ 24766
-5 Qvorr 12798
