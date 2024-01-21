@@ -11,7 +11,7 @@ using namespace std;
 *
 * @Velislava Spasova
 * @9MI0600353
-* @GCC
+* @VC
 *
 */
 
