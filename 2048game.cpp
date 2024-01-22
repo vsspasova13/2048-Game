@@ -164,7 +164,7 @@ void generateRandomIndex(const int matrix[][MAX_MATRIX_SIZE], unsigned int size,
 {
 	randX = (rand() % size);
 	randY = (rand() % size);
-	while (matrix[randX][randY] != 0 && difference == 1)
+	while (matrix[randX][randY] != 0 && difference==1) 
 	{
 		randX = (rand() % size);
 		randY = (rand() % size);
@@ -229,8 +229,8 @@ bool isGameOver(const int matrix[][MAX_MATRIX_SIZE], unsigned int size)
 void readingFromFile(int points[SIZE_OF_LEADERBOARD + 1], char nicknames[SIZE_OF_LEADERBOARD + 1][MAX_NICKNAME_SIZE], size_t size)
 {
 	int rank;
-	char fileName[10][13] = { "../4x4.txt", "../5x5.txt", "../6x6.txt", "../7x7.txt",
-							 "../8x8.txt", "../9x9.txt", "../10x10.txt" };
+	char fileName[7][13] = { "../4x4.txt", "../5x5.txt", "../6x6.txt", "../7x7.txt",
+						 "../8x8.txt", "../9x9.txt", "../10x10.txt" };
 
 	ifstream file(fileName[size - 4]);
 
@@ -253,7 +253,7 @@ void readingFromFile(int points[SIZE_OF_LEADERBOARD + 1], char nicknames[SIZE_OF
 
 void writeInFile(int points[], char nicknames[][MAX_NICKNAME_SIZE], int size)
 {
-	char fileName[10][13] = { "../4x4.txt", "../5x5.txt", "../6x6.txt", "../7x7.txt",
+	char fileName[7][13] = { "../4x4.txt", "../5x5.txt", "../6x6.txt", "../7x7.txt",
 							 "../8x8.txt", "../9x9.txt", "../10x10.txt" };
 
 	ofstream file(fileName[size - 4]);
@@ -292,7 +292,7 @@ void changeLeaderboard(int result, char* nickname, size_t size)
 	points[SIZE_OF_LEADERBOARD] = result;
 	myStrcpy(nickname, nicknames[SIZE_OF_LEADERBOARD]);
 
-	for (int i = 0; i < SIZE_OF_LEADERBOARD + 1; i++)
+	for (int i = 0; i < SIZE_OF_LEADERBOARD; i++)
 	{
 
 		for (int j = 0; j < SIZE_OF_LEADERBOARD - i; j++)
@@ -317,7 +317,7 @@ void printLeaderboard()
 	cin >> leadboardSize;
 	cout << endl;
 
-	char fileName[10][13] = { "../4x4.txt", "../5x5.txt", "../6x6.txt", "../7x7.txt",
+	char fileName[7][13] = { "../4x4.txt", "../5x5.txt", "../6x6.txt", "../7x7.txt",
 						 "../8x8.txt", "../9x9.txt", "../10x10.txt" };
 
 	ifstream file(fileName[leadboardSize - 4]);
@@ -327,11 +327,13 @@ void printLeaderboard()
 		cout << "Error opening the file." << endl;
 		return;
 	}
+	
 	char line[MAX_NICKNAME_SIZE];
 	cout << "LEADBOARD FOR SIZE " << leadboardSize << "x" << leadboardSize << endl;
 	cout << endl;
 	cout << "RANK: NICKNAME: POINTS:" << endl;
 	cout << "----------------------" << endl;
+	
 	while (!file.eof())
 	{
 		file.getline(line, MAX_NICKNAME_SIZE);
@@ -402,6 +404,7 @@ void calculateDown(int matrix[][MAX_MATRIX_SIZE], unsigned int size, bool arr[][
 			if (matrix[i][j] != 0 && matrix[i - 1][j] == matrix[i][j] && arr[i][j] == false)
 			{
 				matrix[i][j] += matrix[i - 1][j]; matrix[i - 1][j] = 0; arr[i - 1][j] = true;
+				difference = true;
 			}
 		}
 	}
@@ -430,13 +433,14 @@ void moveUpColumns(int matrix[][MAX_MATRIX_SIZE], unsigned int size, int coll)
 
 void calculateUp(int matrix[][MAX_MATRIX_SIZE], unsigned int size, bool arr[][MAX_MATRIX_SIZE])
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < size-1; i++)
 	{
 		for (int j = 0; j < size; j++)
 		{
 			if (matrix[i][j] != 0 && matrix[i + 1][j] == matrix[i][j] && arr[i][j] == false)
 			{
 				matrix[i][j] += matrix[i + 1][j]; matrix[i + 1][j] = 0; arr[i + 1][j] = true;
+				difference = true;
 			}
 		}
 
@@ -468,11 +472,12 @@ void calculateLeft(int matrix[][MAX_MATRIX_SIZE], unsigned int size, bool arr[][
 {
 	for (int i = 0; i < size; i++)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < size-1; j++)
 		{
 			if (matrix[i][j] != 0 && matrix[i][j + 1] == matrix[i][j] && arr[i][j] == false)
 			{
 				matrix[i][j] += matrix[i][j + 1]; matrix[i][j + 1] = 0; arr[i][j + 1] = true;
+				difference = true;
 			}
 		}
 
@@ -504,11 +509,12 @@ void calculateRight(int matrix[][MAX_MATRIX_SIZE], unsigned int size, bool arr[]
 {
 	for (int i = size - 1; i >= 0; i--)
 	{
-		for (int j = 0; j < size; j++)
+		for (int j = 0; j < size-1; j++)
 		{
 			if (matrix[i][j] != 0 && matrix[i][j + 1] == matrix[i][j] && arr[i][j] == false)
 			{
 				matrix[i][j] += matrix[i][j + 1]; matrix[i][j + 1] = 0; arr[i][j + 1] = true;
+				difference = true;
 			}
 		}
 
@@ -602,6 +608,7 @@ void game()
 	cin.getline(nickname, MAX_NICKNAME_SIZE);
 
 	unsigned int matrixSize;
+
 	do
 	{
 		cout << "Enter size: ";
@@ -624,7 +631,7 @@ void game()
 	{
 		logic(matrix, matrixSize, result, nickname, isFirstMove);
 		char dir = ' ';
-		//if (!logic(matrix, matrixSize, result, nickname, isFirstMove)) break;
+
 		do
 		{
 			cout << "Enter direction: ";
