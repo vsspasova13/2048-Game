@@ -5,6 +5,7 @@ The rules of how to play 2048 are simple. You have four ways to move the tiles: 
 A low number such as a 2 or 4 will appear in a random spot with every move you make. This makes the board fill up faster, and the rows more difficult to move as the game goes on. 
 
 How To Win 2048
+
 Organize
 The most important thing in your 2048 strategy is to stay organized. If you are randomly swapping numbers in the game, you won't get very far in the chaos. Try and keep the biggest numbers on one side of the square, that way you can start trying to shift them all into a corner. This is one of the most important keys of how to win 2048. 
 
